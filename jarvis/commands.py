@@ -132,12 +132,12 @@ def _search_web(value: str) -> CommandResult:
 def _save_note(notes_file: Path, value: str) -> CommandResult:
     notes_file.parent.mkdir(parents=True, exist_ok=True)
     with notes_file.open("a", encoding="utf-8") as handle:
-        handle.write(f"- {datetime.now().isoformat(timespec='minutes')}: {value}\\n")
+        handle.write(f"- {datetime.now().isoformat(timespec='minutes')}: {value}\n")
     return CommandResult("Saved that note.")
 
 
 def _set_reminder(store: ReminderStore, value: str) -> CommandResult:
-    match = re.fullmatch(r"(\\d+) minutes? to (.+)", value, flags=re.IGNORECASE)
+    match = re.fullmatch(r"(\d+) minutes? to (.+)", value, flags=re.IGNORECASE)
     if not match:
         return CommandResult("Use the format: remind me in 10 minutes to call Mom.")
     reminder = store.add_in_minutes(int(match.group(1)), match.group(2).strip())
