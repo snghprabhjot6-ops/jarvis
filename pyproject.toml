@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis-assistant"
+version = "0.1.0"
+description = "A small, extensible personal voice assistant with wake-word activation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "JARVIS contributors" }]
+dependencies = ["python-dotenv>=1.0.0"]
+
+[project.optional-dependencies]
+voice = [
+  "pvporcupine>=3.0.0",
+  "pvrecorder>=1.2.0",
+  "SpeechRecognition>=3.10.0",
+  "pyttsx3>=2.90",
+]
+test = ["pytest>=8.0.0"]
+dev = ["jarvis-assistant[voice,test]"]
+
+[project.scripts]
+jarvis = "jarvis.main:main"
+
+[tool.setuptools.packages.find]
+include = ["jarvis*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
