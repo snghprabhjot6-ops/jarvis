@@ -23,3 +23,23 @@ def test_exit_command_stops_the_loop(tmp_path: Path) -> None:
 def test_unknown_command_explains_next_step(tmp_path: Path) -> None:
     result = build_router(tmp_path / "notes.md").dispatch("play chess")
     assert "do not have a skill" in result.response
+
+
+def test_calculator_skill_is_safe_and_usable(tmp_path: Path) -> None:
+    result = build_router(tmp_path / "notes.md").dispatch("calculate 12 plus 8")
+    assert result.response == "The answer is 20."
+
+
+def test_reminder_skill_persists_and_lists(tmp_path: Path) -> None:
+    notes = tmp_path / "notes.md"
+    router = build_router(notes)
+    saved = router.dispatch("remind me in 15 minutes to stretch")
+    listed = router.dispatch("show reminders")
+    assert "Reminder saved" in saved.response
+    assert "stretch" in listed.response
+
+
+def test_help_includes_extended_skills(tmp_path: Path) -> None:
+    result = build_router(tmp_path / "notes.md").dispatch("help")
+    assert "calculate" in result.response
+    assert "reminders" in result.response
